@@ -1,0 +1,38 @@
+key = tacacs123
+
+user = admin {
+ default service = permit
+ login = cleartext "admin123"
+ enable = cleartext "enable123"
+ service = exec {
+   priv-lvl = 15
+ }
+}
+
+user = routeradmin {
+ default service = permit
+ login = cleartext "cisco"
+ enable = cleartext "enablepass"
+ service = exec {
+   priv-lvl = 15
+ }
+}
+
+user = readonly {
+ default service = permit
+ login = cleartext "read123"
+ enable = cleartext "enablepass"
+ service = exec {
+   priv-lvl = 1
+ }
+}
+
+user = user {
+ default service = permit
+ login = cleartext user123
+ enable = cleartext guestenable
+ service = exec {
+  priv-lvl = 5
+ }
+}
+

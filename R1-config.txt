@@ -1,0 +1,150 @@
+Building configuration...
+
+Current configuration : 2121 bytes
+!
+! Last configuration change at 08:55:14 UTC Tue Jul 22 2025 by backup
+upgrade fpd auto
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+aqm-register-fnf
+!
+!
+aaa new-model
+!
+!
+aaa authentication login default group tacacs+ local
+aaa authorization exec default group tacacs+ local
+!
+!
+!
+!
+!
+aaa session-id common
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab.local
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username backup privilege 15 secret 5 $1$R84I$FrF/bG5n7LxvQQGw4n7OE/
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+ip scp server enable
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address dhcp
+ ip nat outside
+ ip virtual-reassembly in
+ duplex half
+!
+interface Ethernet1/0
+ ip address 192.168.20.2 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ duplex half
+!
+interface Ethernet1/1
+ no ip address
+ duplex half
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+ duplex half
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+ip nat inside source list 1 interface FastEthernet0/0 overload
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
+ip route 192.168.10.0 255.255.255.0 192.168.20.1
+ip route 192.168.30.0 255.255.255.0 192.168.20.1
+!
+no cdp log mismatch duplex
+!
+!
+tacacs-server host 192.168.30.10 key tacacs123
+tacacs server TAC-SERVER
+ key tacacs123
+access-list 1 permit 192.168.20.0 0.0.0.255
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.30.0 0.0.0.255
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ transport input ssh
+!
+!
+end
+
